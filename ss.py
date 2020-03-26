@@ -20,4 +20,5 @@ def get(key):
     else:
         with open(folder_path + '/' + key, 'rb') as pickle_file:
             value = pickle.load(pickle_file)
+            global_dictionary[key] = value
     return value
