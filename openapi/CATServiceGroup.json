@@ -1,0 +1,954 @@
+{
+    "swagger" : "2.0",
+    "info" : {
+        "version" : "1.0",
+        "title" : "Computer Adaptive Testing (CAT) Service OpenAPI (JSON) Definition",
+        "description" : "The Computer Adaptive Testing (CAT) Service enables a standard way of implementing adaptive testing using Question and Test Interoperability (QTI). This service has been described using the IMS Model Driven Specification development approach, this being the Platform Specific Model (PSM) of the service.",
+        "termsOfService" : "Permission is granted to all parties to use excerpts from this document as needed in producing requests for proposals. The limited permissions granted above are perpetual and will not be revoked by IMS or its successors or assigns. THIS API DEFINITION IS BEING OFFERED WITHOUT ANY WARRANTY WHATSOEVER, AND IN PARTICULAR, ANY WARRANTY OF NONINFRINGEMENT IS EXPRESSLY DISCLAIMED. ANY USE OF THIS SPECIFICATION SHALL BE MADE ENTIRELY AT THE IMPLEMENTERS OWN RISK, AND NEITHER THE  CONSORTIUM, NOR ANY OF ITS MEMBERS OR SUBMITTERS, SHALL HAVE ANY LIABILITY WHATSOEVER TO ANY IMPLEMENTER OR THIRD PARTY FOR ANY DAMAGES OF ANY NATURE WHATSOEVER,  DIRECTLY OR INDIRECTLY, ARISING FROM THE USE OF THIS API DEFINITION.",
+        "contact" : {
+            "name" : "Lisa Mattson (COO), IMS Global ",
+            "url" : "http://www.imsglobal.org",
+            "email" : "lmattson@imsglobal.org"
+        },
+        "license" : {
+            "name" : "IMS Global",
+            "url" : "https://www.imsglobal.org/license.html"
+        }
+    },
+    "host" : "www.imsglobal.org",
+    "basePath" : "/ims/cat/v1p0",
+    "schemes" : [ "http","https" ],
+    "tags" : [
+        {
+            "name" : "SectionsManager",
+            "description" : "The set of service operations that manage access to the adaptive Sections being handled by the CAT Engine."
+        },
+        {
+            "name" : "SessionsManager",
+            "description" : "The set of service operations that manage access to the adaptive Sessions being handled by the CAT Engine."
+        }
+    ],
+    "securityDefinitions" : {
+
+    },
+    "paths" : {
+        "/sections" : {
+            "post" : {
+                "operationId" : "createSection",
+                "summary" : "The REST createbp request message for the createSection() API call.",
+                "tags" : [ "SectionsManager" ],
+                "description" : "This is a request to the CAT Engine to create a new adaptive Section. The CAT Engine is responsible for assigning the unique identifier to be used for this Section in other exchanges. ",
+                "parameters" : [
+                    {
+                        "name" : "section",
+                        "in" : "body",
+                        "description" : "The data for the configuration of the new adaptive Section.",
+                        "required" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/SectionDType"
+                        }
+                    }
+                ],
+                "responses" : {
+                    "201" : {
+                        "description" : "The response code for when the new Section has been created in the CAT Engine and the associated identifier has been returned.",
+                        "schema" : {
+                            "$ref" : "#/definitions/CreateSectionResponseBodyDType"
+                        }
+                    },
+                    "400" : {
+                        "description" : "The request has been declared as 'bad'.  This will be due to the provision of bad data in the request payloads, including  a poorly formed JSON payload. This is accompanied by the 'codeMajor/severity' values of 'failure/error'.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "401" : {
+                        "description" : "The request was not correctly authorized i.e. 'unauthorisedrequest'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. ",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "500" : {
+                        "description" : "This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. ",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "default" : {
+                        "description" : "This is the response data payload to be supplied when the HTTP code is NOT explicitly defined. This would be accompanied by the 'codeMajor/severity' values of 'failure/error' and the appropriate 'codeMinor' value. The associated HTTP code will also be supplied.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    }
+                }
+            }
+        },
+        "/sections/{sectionIdentifier}" : {
+            "get" : {
+                "operationId" : "getSection",
+                "summary" : "The REST read request message for the getSection() API call.",
+                "tags" : [ "SectionsManager" ],
+                "description" : "This is a request to the CAT engine to return the parameters which were used to create the adaptive Section and the list of items in the Section's item pool as configured by the CAT engine.",
+                "parameters" : [
+                    {
+                        "name" : "sectionIdentifier",
+                        "in" : "path",
+                        "description" : "...tbd...",
+                        "required" : true,
+                        "type" : "string"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "The response code for when the list of Items in the section's item pool has been returned. The response message contains the list of Items, the section configuration used to create the section, and any qtiUsagedata and qtiMetadata used to create the section.",
+                        "schema" : {
+                            "$ref" : "#/definitions/GetSectionResponseBodyDType"
+                        }
+                    },
+                    "400" : {
+                        "description" : "The request has been declared as 'bad'.  This will be due to the provision of bad data in the request payloads, including  a poorly formed JSON payload. This is accompanied by the 'codeMajor/severity' values of 'failure/error'.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "401" : {
+                        "description" : "The request was not correctly authorized i.e. 'unauthorisedrequest'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. ",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "404" : {
+                        "description" : "The supplied identifier is unknown in the CAT Engine and so the object could not be processed. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The statement 'Unknown Object' of should also be presented.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "500" : {
+                        "description" : "This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. ",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "default" : {
+                        "description" : "This is the response data payload to be supplied when the HTTP code is NOT explicitly defined. This would be accompanied by the 'codeMajor/severity' values of 'failure/error' and the appropriate 'codeMinor' value. The associated HTTP code will also be supplied.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId" : "deleteSection",
+                "summary" : "The REST delete request message for the deleteSection() API call.",
+                "tags" : [ "SectionsManager" ],
+                "description" : "This is a request to the CAT Engine to delete the identified section i.e. the section identified is no longer available (soft delete without anything being actually deleted). If the identified record cannot be found then the 'unknownobject' status code must be reported.",
+                "parameters" : [
+                    {
+                        "name" : "sectionIdentifier",
+                        "in" : "path",
+                        "description" : "The LUID that identifies the Section to be deleted on the CAT Engine.",
+                        "required" : true,
+                        "type" : "string"
+                    }
+                ],
+                "responses" : {
+                    "204" : {
+                        "description" : "The response code for when the identified Section has been deleted in the CAT Engine. There is no response payload."
+                    },
+                    "400" : {
+                        "description" : "The request has been declared as 'bad'.  This will be due to the provision of bad data in the request payloads, including  a poorly formed JSON payload. This is accompanied by the 'codeMajor/severity' values of 'failure/error'.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "401" : {
+                        "description" : "The request was not correctly authorized i.e. 'unauthorisedrequest'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. ",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "404" : {
+                        "description" : "The supplied identifier is unknown in the CAT Engine and so the object could not be processed. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The statement 'Unknown Object' of should also be presented.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "500" : {
+                        "description" : "This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. ",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "default" : {
+                        "description" : "This is the response data payload to be supplied when the HTTP code is NOT explicitly defined. This would be accompanied by the 'codeMajor/severity' values of 'failure/error' and the appropriate 'codeMinor' value. The associated HTTP code will also be supplied.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    }
+                }
+            }
+        },
+        "/sections/{sectionIdentifier}/sessions" : {
+            "post" : {
+                "operationId" : "createSession",
+                "summary" : "The REST createbp request message for the createSession() API call.",
+                "tags" : [ "SessionsManager" ],
+                "description" : "Creates a new Session, in the context of the identified Section, which represents a single examinee taking the adaptive section identified by the sectionIdentifier. The CAT Engine is responsible for assigning the unique identifier for this Session in other exchanges",
+                "parameters" : [
+                    {
+                        "name" : "sectionIdentifier",
+                        "in" : "path",
+                        "description" : "The LUID that identifies the Section in the CAT Engine to which this new Session is to be assigned.",
+                        "required" : true,
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "session",
+                        "in" : "body",
+                        "description" : "The Session configuration data including the information about the examinee.",
+                        "required" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/SessionDType"
+                        }
+                    }
+                ],
+                "responses" : {
+                    "201" : {
+                        "description" : "The response code for when the new Session has been created in the CAT Engine and the associated identifier has been returned. The response message consists of the identifier allocated to the session, the initial set of Items to be presented and the session state to be used for later requests.",
+                        "schema" : {
+                            "$ref" : "#/definitions/CreateSessionResponseBodyDType"
+                        }
+                    },
+                    "400" : {
+                        "description" : "The request has been declared as 'bad'.  This will be due to the provision of bad data in the request payloads, including  a poorly formed JSON payload. This is accompanied by the 'codeMajor/severity' values of 'failure/error'.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "401" : {
+                        "description" : "The request was not correctly authorized i.e. 'unauthorisedrequest'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. ",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "404" : {
+                        "description" : "The supplied identifier is unknown in the CAT Engine and so the object could not be processed. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The statement 'Unknown Object' of should also be presented.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "500" : {
+                        "description" : "This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. ",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "default" : {
+                        "description" : "This is the response data payload to be supplied when the HTTP code is NOT explicitly defined. This would be accompanied by the 'codeMajor/severity' values of 'failure/error' and the appropriate 'codeMinor' value. The associated HTTP code will also be supplied.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    }
+                }
+            }
+        },
+        "/sections/{sectionIdentifier}/sessions/{sessionIdentifier}" : {
+            "delete" : {
+                "operationId" : "deleteSession",
+                "summary" : "The REST delete request message for the deleteSession() API call.",
+                "tags" : [ "SessionsManager" ],
+                "description" : "This is a request to the CAT Engine to delete the identified session i.e. the session identified is no longer available (soft delete without anything being actually deleted). If the identified session cannot be found then the 'unknownobject' status code must be reported.",
+                "parameters" : [
+                    {
+                        "name" : "sectionIdentifier",
+                        "in" : "path",
+                        "description" : "The LUID that identifies the Section to be deleted on the CAT Engine.",
+                        "required" : true,
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "sessionIdentifier",
+                        "in" : "path",
+                        "description" : "The LUID that identifies the Session, in the context of the identified Section, to be deleted on the CAT Engine.",
+                        "required" : true,
+                        "type" : "string"
+                    }
+                ],
+                "responses" : {
+                    "204" : {
+                        "description" : "The response code for when the identified Session has been deleted in the CAT Engine. There is no response payload."
+                    },
+                    "400" : {
+                        "description" : "The request has been declared as 'bad'.  This will be due to the provision of bad data in the request payloads, including  a poorly formed JSON payload. This is accompanied by the 'codeMajor/severity' values of 'failure/error'.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "401" : {
+                        "description" : "The request was not correctly authorized i.e. 'unauthorisedrequest'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. ",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "404" : {
+                        "description" : "The supplied identifier is unknown in the CAT Engine and so the object could not be processed. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The statement 'Unknown Object' of should also be presented.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "500" : {
+                        "description" : "This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. ",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "default" : {
+                        "description" : "This is the response data payload to be supplied when the HTTP code is NOT explicitly defined. This would be accompanied by the 'codeMajor/severity' values of 'failure/error' and the appropriate 'codeMinor' value. The associated HTTP code will also be supplied.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    }
+                }
+            }
+        },
+        "/sections/{sectionIdentifier}/sessions/{sessionIdentifier}/results" : {
+            "post" : {
+                "operationId" : "getNextItems",
+                "summary" : "The REST update request message for the getNextItems() API call.",
+                "tags" : [ "SessionsManager" ],
+                "description" : "This is a request to the CAT Engine to supply the next set of Items that are to be presented to the examinee.  If the identified Section/Session cannot be found then the 'unknownobject' status code must be reported.",
+                "parameters" : [
+                    {
+                        "name" : "sectionIdentifier",
+                        "in" : "path",
+                        "description" : "The LUID that identifies the Section in the CAT Engine to be used.",
+                        "required" : true,
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "sessionIdentifier",
+                        "in" : "path",
+                        "description" : "The LUID that identifies the Session, in the context of the Section, in the CAT Engine to be used.",
+                        "required" : true,
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "resultSet",
+                        "in" : "body",
+                        "description" : "The set of results that have been obtained, so far, by the examinee for the identified session.",
+                        "required" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/ResultsDType"
+                        }
+                    }
+                ],
+                "responses" : {
+                    "201" : {
+                        "description" : "The response code for when the next set of Items to be presented to the examinee has been returned. The response message contains the next set of Items, the session state to be used in later requests and, optionally, the assessment results.",
+                        "schema" : {
+                            "$ref" : "#/definitions/GetNextItemsResponseBodyDType"
+                        }
+                    },
+                    "400" : {
+                        "description" : "The request has been declared as 'bad'.  This will be due to the provision of bad data in the request payloads, including  a poorly formed JSON payload. This is accompanied by the 'codeMajor/severity' values of 'failure/error'.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "401" : {
+                        "description" : "The request was not correctly authorized i.e. 'unauthorisedrequest'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. ",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "404" : {
+                        "description" : "The supplied identifier is unknown in the CAT Engine and so the object could not be processed. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The statement 'Unknown Object' of should also be presented.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "500" : {
+                        "description" : "This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. ",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    },
+                    "default" : {
+                        "description" : "This is the response data payload to be supplied when the HTTP code is NOT explicitly defined. This would be accompanied by the 'codeMajor/severity' values of 'failure/error' and the appropriate 'codeMinor' value. The associated HTTP code will also be supplied.",
+                        "schema" : {
+                            "$ref" : "#/definitions/imsx_StatusInfoDType"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions" : {
+        "CreateSessionResponseBodyDType" : {
+            "description" : "The response code for when the new Session has been created in the CAT Engine and the associated identifier has been returned. The response message consists of the identifier allocated to the session, the initial set of Items to be presented and the session state to be used for later requests.",
+            "type" : "object",
+            "properties" : {
+                "sessionIdentifier" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. The LUID that has been assigned by the CAT Engine to the new Session.",
+                    "type" : "string"
+                },
+                "nextItems" : {
+                    "$ref" : "#/definitions/NextItemSetDType"
+                },
+                "sessionState" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. The session state to send back on subsequent calls within this session.",
+                    "type" : "string"
+                }
+            },
+            "additionalProperties" : false
+        },
+        "GetNextItemsResponseBodyDType" : {
+            "description" : "The response code for when the next set of Items to be presented to the examinee has been returned. The response message contains the next set of Items, the session state to be used in later requests and, optionally, the assessment results.",
+            "type" : "object",
+            "properties" : {
+                "nextItems" : {
+                    "$ref" : "#/definitions/NextItemSetDType"
+                },
+                "assessmentResult" : {
+                    "$ref" : "#/definitions/AssessmentResultDType"
+                },
+                "sessionState" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. The session state to send back on subsequent calls within this session.",
+                    "type" : "string"
+                }
+            },
+            "additionalProperties" : false
+        },
+        "GetSectionResponseBodyDType" : {
+            "description" : "The response code for when the list of Items in the section's item pool has been returned. The response message contains the list of Items, the section configuration used to create the section, and any qtiUsagedata and qtiMetadata used to create the section.",
+            "type" : "object",
+            "properties" : {
+                "items" : {
+                    "$ref" : "#/definitions/ItemSetDType"
+                },
+                "section" : {
+                    "$ref" : "#/definitions/SectionDType"
+                }
+            },
+            "additionalProperties" : false
+        },
+        "CreateSectionResponseBodyDType" : {
+            "description" : "The response code for when the new Section has been created in the CAT Engine and the associated identifier has been returned.",
+            "type" : "object",
+            "properties" : {
+                "sectionIdentifier" : {
+                    "description" : "Model Primitive Datatype = NormalizedString.",
+                    "type" : "string"
+                }
+            },
+            "additionalProperties" : false
+        },
+        "AssessmentResultDType" : {
+            "description" : "An Assessment Result is used to report the results of a candidate's interaction with a test and/or one or more items attempted. Information about the test is optional, in some systems it may be possible to interact with items that are not organized into a test at all. For example, items that are organized with learning resources and presented individually in a formative context.",
+            "type" : "object",
+            "properties" : {
+                "context" : {
+                    "$ref" : "#/definitions/ContextDType"
+                },
+                "testResult" : {
+                    "$ref" : "#/definitions/TestResultDType"
+                },
+                "itemResult" : {
+                    "description" : "When a test result is given the following item results must relate only to items that were selected for presentation as part of the corresponding test session. Furthermore, all items selected for presentation should be reported with a corresponding itemResult.",
+                    "type" : "array",
+                    "minItems" : 0,
+                    "items" : {
+                        "$ref" : "#/definitions/ItemResultDType"
+                    }
+                }
+            },
+            "additionalProperties" : false
+        },
+        "CandidateResponseDType" : {
+            "description" : "The response given by the candidate.",
+            "type" : "object",
+            "properties" : {
+                "value" : {
+                    "description" : "...tbd (ComplexType property description)...",
+                    "type" : "array",
+                    "minItems" : 0,
+                    "items" : {
+                        "$ref" : "#/definitions/ValueDType"
+                    }
+                }
+            },
+            "additionalProperties" : false
+        },
+        "ContextDType" : {
+            "description" : "This is the context for the 'assessmentResult'. It provides the corresponding set of identifiers.",
+            "type" : "object",
+            "properties" : {
+                "sourcedId" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. A unique identifier for the test candidate.",
+                    "type" : "string"
+                },
+                "sessionIdentifiers" : {
+                    "description" : "The system that creates the result (for example, the test delivery system) should assign a session identifier that it can use to identify the session. Subsequent systems that process the result might assign their own identifier to the session which should be added to the context if the result is modified and exported for transport again.",
+                    "type" : "array",
+                    "minItems" : 0,
+                    "items" : {
+                        "$ref" : "#/definitions/SessionIdentifierDType"
+                    }
+                }
+            },
+            "additionalProperties" : false
+        },
+        "CorrectResponseDType" : {
+            "description" : "The correct response may be output as part of the report if desired. Systems are not limited to reporting correct responses declared in responseDeclarations. For example, a correct response may be set by a templateRule or may simply have been suppressed from the declaration passed to the delivery engine e.g. for security.",
+            "type" : "object",
+            "properties" : {
+                "interpretation" : {
+                    "description" : "Model Primitive Datatype = String. ...tbd (PrimitiveType description)...",
+                    "type" : "string"
+                },
+                "value" : {
+                    "description" : "...tbd (ComplexType property description)...",
+                    "type" : "array",
+                    "minItems" : 0,
+                    "items" : {
+                        "$ref" : "#/definitions/ValueDType"
+                    }
+                }
+            },
+            "additionalProperties" : false
+        },
+        "ItemResultDType" : {
+            "description" : "The result of an item session is reported with an itemResult. A report may contain multiple results for the same instance of an item representing multiple attempts, progression through an adaptive item or even more detailed tracking. In these cases, each item result must have a different datestamp.",
+            "type" : "object",
+            "properties" : {
+                "identifier" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. The identifier of the item for which this is a result. For item results that are reported as part of a test result this is the identifier used to refer to the item in the test (see assessmentItemRef). For item results that are reported on their own, this can be any suitable identifier for the item. Where possible, the value should match the identifier attribute on the associated assessmentItem.",
+                    "type" : "string"
+                },
+                "sequenceIndex" : {
+                    "description" : "Model Primitive Datatype = NonNegativeInteger. For item results that are reported as part of a test, this attribute must be used to indicate the position of the item within the specific instance of the test. The first item of the first part of the test is defined to have sequence index 1.",
+                    "type" : "integer",
+                    "format" : "int32",
+                    "minimum" : 0
+                },
+                "datestamp" : {
+                    "description" : "Model Primitive Datatype = DateTime. The date stamp of when this result was recorded.",
+                    "type" : "string",
+                    "format" : "date-time"
+                },
+                "sessionStatus" : {
+                    "description" : "The session status is used to interpret the values of the item variables. See the sessionStatus vocabulary.",
+                    "type" : "string",
+                    "enum" : [ "final","initial","pendingResponseProcessing","pendingSubmission" ]
+                },
+                "responseVariables" : {
+                    "description" : "Indicates that a Response Variable is being reported. This is the value of one of the responses associated with an Item in the corresponding ASI instance.",
+                    "type" : "array",
+                    "minItems" : 0,
+                    "items" : {
+                        "$ref" : "#/definitions/ResponseVariableDType"
+                    }
+                },
+                "templateVariables" : {
+                    "description" : "Indicates that a Template Variable is being reported. This is the value of one of the template variables associated with an Item in the corresponding ASI instance.",
+                    "type" : "array",
+                    "minItems" : 0,
+                    "items" : {
+                        "$ref" : "#/definitions/TemplateVariableDType"
+                    }
+                },
+                "outcomeVariables" : {
+                    "description" : "Indicates that an Outcome Variable is being reported. This is the value of one of the outcomes associated with either an Item or Test and defined in the corresponding ASI instance.",
+                    "type" : "array",
+                    "minItems" : 0,
+                    "items" : {
+                        "$ref" : "#/definitions/OutcomeVariableDType"
+                    }
+                },
+                "candidateComment" : {
+                    "description" : "Model Primitive Datatype = String. An optional comment supplied by the candidate (see the allowComment in the ASI documentation [QTI, 15a]).",
+                    "type" : "string"
+                }
+            },
+            "required" : [ "identifier","datestamp","sessionStatus" ],
+            "additionalProperties" : false
+        },
+        "ItemSetDType" : {
+            "description" : "...tbd (Class description)...",
+            "type" : "object",
+            "properties" : {
+                "itemIdentifiers" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. ...tbd (DerivedType property description)...",
+                    "type" : "array",
+                    "minItems" : 1,
+                    "items" : {
+                        "type" : "string"
+                    }
+                }
+            },
+            "required" : [ "itemIdentifiers" ],
+            "additionalProperties" : false
+        },
+        "KeyValuePairDType" : {
+            "description" : "The container for the values assigned to the Key/Value pair.",
+            "type" : "object",
+            "properties" : {
+                "glossaryURI" : {
+                    "description" : "Model Primitive Datatype = AnyURI. ...tbd (PrimitiveType description)...",
+                    "type" : "string",
+                    "format" : "uri"
+                },
+                "key" : {
+                    "description" : "Model Primitive Datatype = String. ...tbd (PrimitiveType description)...",
+                    "type" : "string"
+                },
+                "value" : {
+                    "description" : "Model Primitive Datatype = String. ...tbd (PrimitiveType description)...",
+                    "type" : "string"
+                }
+            },
+            "required" : [ "key","value" ],
+            "additionalProperties" : false
+        },
+        "NextItemSetDType" : {
+            "description" : "The container for the information about the set of next Items that should be presented to the examinee.",
+            "type" : "object",
+            "properties" : {
+                "itemIdentifiers" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. The Identifiers for the set of Items that should be presented next. These should be the GUIDs that have been assigned to AssessmentItems when defined using IMS QTI.",
+                    "type" : "array",
+                    "minItems" : 1,
+                    "items" : {
+                        "type" : "string"
+                    }
+                },
+                "stageLength" : {
+                    "description" : "Model Primitive Datatype = NonNegativeInteger. The (minimum) number of items the CAT Engine can present before requesting next items",
+                    "type" : "integer",
+                    "format" : "int32",
+                    "minimum" : 0
+                }
+            },
+            "required" : [ "itemIdentifiers" ],
+            "additionalProperties" : false
+        },
+        "OutcomeVariableDType" : {
+            "description" : "The Item result information related to an 'Outcome Variable'.",
+            "type" : "object",
+            "properties" : {
+                "identifier" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. The identifier of the Outcome Variable.",
+                    "type" : "string"
+                },
+                "cardinality" : {
+                    "description" : "The cardinality of the Outcome Variable, taken from the corresponding declaration or definition.",
+                    "type" : "string",
+                    "enum" : [ "multiple","ordered","record","single" ]
+                },
+                "baseType" : {
+                    "description" : "The base type of the Outcome Variable, taken from the corresponding declaration of definition. This value is omitted only for variables with record cardinality.",
+                    "type" : "string",
+                    "enum" : [ "boolean","directedPair","duration","file","float","identifier","integer","pair","point","string","uri" ]
+                },
+                "view" : {
+                    "description" : "The views (if any) declared for the outcome must be copied to the report to enable systems that render the report to hide information not relevant in a specific situation. If no values are given, the outcome's value should be considered relevant in all views.",
+                    "type" : "string",
+                    "enum" : [ "author","candidate","proctor","scorer","testConstructor","tutor" ]
+                },
+                "interpretation" : {
+                    "description" : "Model Primitive Datatype = String. ...tbc...",
+                    "type" : "string"
+                },
+                "longInterpretation" : {
+                    "description" : "Model Primitive Datatype = AnyURI. ...tbc...",
+                    "type" : "string",
+                    "format" : "uri"
+                },
+                "normalMaximum" : {
+                    "description" : "Model Primitive Datatype = Double. The normalMaximum attribute optionally defines the maximum magnitude of numeric outcome variables, it must be a positive value. If given, the outcome's value can be divided by normalMaximum and then truncated (if necessary) to obtain a normalized score in the range [-1.0,1.0]. normalMaximum has no affect on responseProcessing or the values that the outcome variable itself can take.",
+                    "type" : "number",
+                    "format" : "double"
+                },
+                "normalMinimum" : {
+                    "description" : "Model Primitive Datatype = Double. ...tbd (PrimitiveType description)...",
+                    "type" : "number",
+                    "format" : "double"
+                },
+                "masteryValue" : {
+                    "description" : "Model Primitive Datatype = Double. ...tbd (PrimitiveType description)...",
+                    "type" : "number",
+                    "format" : "double"
+                },
+                "value" : {
+                    "description" : "...tbd (ComplexType property description)...",
+                    "type" : "array",
+                    "minItems" : 0,
+                    "items" : {
+                        "$ref" : "#/definitions/ValueDType"
+                    }
+                }
+            },
+            "required" : [ "identifier","cardinality" ],
+            "additionalProperties" : false
+        },
+        "ResponseVariableDType" : {
+            "description" : "The Item result information related to a 'Response Variable'.",
+            "type" : "object",
+            "properties" : {
+                "identifier" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. The identifier of the Response Variable.",
+                    "type" : "string"
+                },
+                "cardinality" : {
+                    "description" : "The cardinality of the Response Variable, taken from the corresponding declaration or definition.",
+                    "type" : "string",
+                    "enum" : [ "multiple","ordered","record","single" ]
+                },
+                "baseType" : {
+                    "description" : "The base type of the Response Variable, taken from the corresponding declaration of definition. This value is omitted only for variables with record cardinality.",
+                    "type" : "string",
+                    "enum" : [ "boolean","directedPair","duration","file","float","identifier","integer","pair","point","string","uri" ]
+                },
+                "choiceSequence" : {
+                    "description" : "Model Primitive Datatype = NCName. When a response variable is bound to an interaction that supports the shuffling of choices, the sequence of choices experienced by the candidate will vary between test instances. When shuffling is in effect, the sequence of choices should be reported as a sequence of choice identifiers using this attribute.",
+                    "type" : "string"
+                },
+                "correctResponse" : {
+                    "$ref" : "#/definitions/CorrectResponseDType"
+                },
+                "candidateResponse" : {
+                    "$ref" : "#/definitions/CandidateResponseDType"
+                }
+            },
+            "required" : [ "identifier","cardinality","candidateResponse" ],
+            "additionalProperties" : false
+        },
+        "ResultsDType" : {
+            "description" : "This is the container for the results that have been accrued by the examinee. These are passed to the CAT Engine to support the selection of the next set of Items.",
+            "type" : "object",
+            "properties" : {
+                "assessmentResult" : {
+                    "$ref" : "#/definitions/AssessmentResultDType"
+                },
+                "sessionState" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. The session state information. This is the data that was supplied by the CAT Engine when the session was created or the next set of Items was requested.",
+                    "type" : "string"
+                }
+            },
+            "required" : [ "assessmentResult" ],
+            "additionalProperties" : false
+        },
+        "SectionDType" : {
+            "description" : "The container for the definition of the Section that is to be created in the CAT Engine. A Section is aligned to a QTI AssessmentSection.",
+            "type" : "object",
+            "properties" : {
+                "qtiMetadata" : {
+                    "description" : "Model Primitive Datatype = String. This is the Base64 encoded XML conforming to IMS QTI 2.2 Metadata model.",
+                    "type" : "string"
+                },
+                "qtiUsagedata" : {
+                    "description" : "Model Primitive Datatype = String. This is the Base64 encoded XML conforming to IMS QTI Usage Date data model",
+                    "type" : "string"
+                },
+                "sectionConfiguration" : {
+                    "description" : "Model Primitive Datatype = String. This is the Base64 encoded data containing section configuration, aligned with adaptive engine (black box). This format will be proprietary to each adaptive CAT Engine.",
+                    "type" : "string"
+                }
+            },
+            "required" : [ "sectionConfiguration" ],
+            "additionalProperties" : false
+        },
+        "SessionDType" : {
+            "description" : "This is the container for the session configuration data that must be supplied to the CAT Engine when the session is to be created.",
+            "type" : "object",
+            "properties" : {
+                "personalNeedsAndPreferences" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. This is the Base64 encoded XML data for the Personal Needs and Preferences (PNP) for the examinee.  This data conforms to the XML as defined in the IMS Access for All Personal Needs and Preferences (AfAPNP) 2.0 specification.",
+                    "type" : "string"
+                },
+                "demographics" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. The Base64 encoding of the JSON data for the Demographics information for the examinee. This data conforms to the JSON as defined in the IMS OneRoster 1.1 specification.",
+                    "type" : "string"
+                },
+                "priorData" : {
+                    "description" : "This is proprietary data that is supplied to the CAT Engine as a key/value pairs.",
+                    "type" : "array",
+                    "minItems" : 0,
+                    "items" : {
+                        "$ref" : "#/definitions/KeyValuePairDType"
+                    }
+                }
+            },
+            "additionalProperties" : false
+        },
+        "SessionIdentifierDType" : {
+            "description" : "The system that creates the result (for example, the test delivery system) should assign a session identifier that it can use to identify the session.",
+            "type" : "object",
+            "properties" : {
+                "sourceID" : {
+                    "description" : "Model Primitive Datatype = AnyURI. A unique identifier of the system which added this identifier to the result.",
+                    "type" : "string",
+                    "format" : "uri"
+                },
+                "identifier" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. The system that creates the report should add a session identifier. Subsequent systems that process the results might use their own identifier for the session and should add this too if the result is exported again for further transport.",
+                    "type" : "string"
+                }
+            },
+            "required" : [ "sourceID","identifier" ],
+            "additionalProperties" : false
+        },
+        "TemplateVariableDType" : {
+            "description" : "The Item result information related to a 'Template Variable'.",
+            "type" : "object",
+            "properties" : {
+                "identifier" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. ...tbd (DerivedType property description)...",
+                    "type" : "string"
+                },
+                "cardinality" : {
+                    "description" : "...tbd (Enumeration description)...",
+                    "type" : "string",
+                    "enum" : [ "multiple","ordered","record","single" ]
+                },
+                "baseType" : {
+                    "description" : "...tbd (Enumeration description)...",
+                    "type" : "string",
+                    "enum" : [ "boolean","directedPair","duration","file","float","identifier","integer","pair","point","string","uri" ]
+                },
+                "value" : {
+                    "description" : "...tbd (ComplexType property description)...",
+                    "type" : "array",
+                    "minItems" : 0,
+                    "items" : {
+                        "$ref" : "#/definitions/ValueDType"
+                    }
+                }
+            },
+            "required" : [ "identifier","cardinality" ],
+            "additionalProperties" : false
+        },
+        "TestResultDType" : {
+            "description" : "The container for the Test result. When a test result is given the following item results must relate only to items that were selected for presentation as part of the corresponding test session. Furthermore, all items selected for presentation should be reported with a corresponding itemResult.",
+            "type" : "object",
+            "properties" : {
+                "identifier" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. ...tbc...",
+                    "type" : "string"
+                },
+                "datestamp" : {
+                    "description" : "Model Primitive Datatype = DateTime. ...tbc...",
+                    "type" : "string",
+                    "format" : "date-time"
+                },
+                "responseVariables" : {
+                    "description" : "...tbc...",
+                    "type" : "array",
+                    "minItems" : 0,
+                    "items" : {
+                        "$ref" : "#/definitions/ResponseVariableDType"
+                    }
+                },
+                "templateVariables" : {
+                    "description" : "...tbc...",
+                    "type" : "array",
+                    "minItems" : 0,
+                    "items" : {
+                        "$ref" : "#/definitions/TemplateVariableDType"
+                    }
+                },
+                "outcomeVariables" : {
+                    "description" : "...tbc...",
+                    "type" : "array",
+                    "minItems" : 0,
+                    "items" : {
+                        "$ref" : "#/definitions/OutcomeVariableDType"
+                    }
+                }
+            },
+            "required" : [ "identifier","datestamp" ],
+            "additionalProperties" : false
+        },
+        "ValueDType" : {
+            "description" : "A class that can represent a single value of any baseType in variable declarations and result reports. The base-type is defined by the baseType attribute of the declaration except in the case of variables with record cardinality.",
+            "type" : "object",
+            "properties" : {
+                "fieldIdentifier" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. ...tbd (DerivedType property description)...",
+                    "type" : "string"
+                },
+                "baseType" : {
+                    "description" : "...tbd (Enumeration description)...",
+                    "type" : "string",
+                    "enum" : [ "boolean","directedPair","duration","file","float","identifier","integer","pair","point","string","uri" ]
+                },
+                "value" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. ...tbd (PrimitiveType description)...",
+                    "type" : "string"
+                }
+            },
+            "required" : [ "value" ],
+            "additionalProperties" : false
+        },
+        "imsx_CodeMinorDType" : {
+            "description" : "This is the container for the set of code minor status codes reported in the responses from the Service Provider.",
+            "type" : "object",
+            "properties" : {
+                "imsx_codeMinorField" : {
+                    "description" : "Each reported code minor status code.",
+                    "type" : "array",
+                    "minItems" : 1,
+                    "items" : {
+                        "$ref" : "#/definitions/imsx_CodeMinorFieldDType"
+                    }
+                }
+            },
+            "required" : [ "imsx_codeMinorField" ],
+            "additionalProperties" : false
+        },
+        "imsx_CodeMinorFieldDType" : {
+            "description" : "This is the container for a single code minor status code.",
+            "type" : "object",
+            "properties" : {
+                "imsx_codeMinorFieldName" : {
+                    "description" : "Model Primitive Datatype = NormalizedString. This should contain the identity of the system that has produced the code minor status code report.",
+                    "type" : "string"
+                },
+                "imsx_codeMinorFieldValue" : {
+                    "description" : "The code minor status code (this is a value from the corresponding enumerated vocabulary).",
+                    "type" : "string",
+                    "enum" : [ "fullsuccess","forbidden","invaliddata","unauthorisedrequest","internal_server_error","server_busy","unknownobject" ]
+                }
+            },
+            "required" : [ "imsx_codeMinorFieldName","imsx_codeMinorFieldValue" ],
+            "additionalProperties" : false
+        },
+        "imsx_StatusInfoDType" : {
+            "description" : "This is the container for the status code and associated information returned within the HTTP messages received from the Service Provider.",
+            "type" : "object",
+            "properties" : {
+                "imsx_codeMajor" : {
+                    "description" : "The code major value (from the corresponding enumerated vocabulary).",
+                    "type" : "string",
+                    "enum" : [ "success","processing","failure","unsupported" ]
+                },
+                "imsx_severity" : {
+                    "description" : "The severity value (from the corresponding enumerated vocabulary).",
+                    "type" : "string",
+                    "enum" : [ "status","warning","error" ]
+                },
+                "imsx_description" : {
+                    "description" : "Model Primitive Datatype = String. A human readable description supplied by the entity creating the status code information.",
+                    "type" : "string"
+                },
+                "imsx_codeMinor" : {
+                    "$ref" : "#/definitions/imsx_CodeMinorDType"
+                }
+            },
+            "required" : [ "imsx_codeMajor","imsx_severity" ],
+            "additionalProperties" : false
+        }
+    },
+    "consumes" : [ "application/json" ],
+    "produces" : [ "application/json" ]
+}
