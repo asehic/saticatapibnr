@@ -1,3 +1,5 @@
+# Shared State local implementation using files
+
 import os, pickle
 
 global_dictionary = {}
