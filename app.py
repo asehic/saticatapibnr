@@ -37,6 +37,6 @@ def deleteSession(sectionIdentifier, sessionIdentifier):
 def getNextItems(sectionIdentifier, sessionIdentifier, resultSet):
     return 'Not Implemented', 500
 
-app = connexion.FlaskApp(__name__, specification_dir='openapi/')
+app = connexion.FlaskApp(__name__, specification_dir='openapi/', server='tornado')
 app.add_api('FSCATAPI.json')
 app.run(port=8080)

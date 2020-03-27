@@ -11,6 +11,12 @@ Install with:
 pip install connexion[swagger-ui]
 ```
 
+Tornado 6.0.4
+Install with:
+```
+pip install tornado
+```
+
 ### Run
 
 ```

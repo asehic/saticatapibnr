@@ -36,4 +36,5 @@ def test_post_sessions():
         response = requests.request('POST', url, headers=headers, data = payload)
 
         assert response.status_code == 201
-        assert response.json()['nextItems']['itemIdentifiers'] in [[item['itemId'] for item in form['items']] for form in settings['forms']]
+        assert response.json()['nextItems']['itemIdentifiers'] in \
+            [[item['itemId'] for item in form['items']] for form in settings['forms']]
