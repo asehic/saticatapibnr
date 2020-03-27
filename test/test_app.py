@@ -21,12 +21,30 @@ def test_post_sections():
     assert isinstance(sectionIdentifier, str)
     assert len(sectionIdentifier) > 8
 
+def test_get_sections():
+
+    global settings_file_path, sectionIdentifier
+
+    with open(settings_file_path) as settings_file:
+        section_configuration = settings_file.read()
+    encoded_section_configuration = base64.b64encode(section_configuration.encode())
+    decoded_section_configuration = json.loads(section_configuration)
+
+    url = 'http://localhost:8080/ims/cat/v1p0/sections/' + sectionIdentifier
+    response = requests.request('GET', url)
+
+    forms = [[item['itemId'] for item in form['items']] for form in decoded_section_configuration['forms']]
+    item_identifiers = set(item_id for form in forms for item_id in form)
+    assert response.status_code == 200
+    assert set(response.json()['items']['itemIdentifiers']) == item_identifiers
+    assert response.json()['section'] == {'sectionConfiguration': encoded_section_configuration.decode()}
+
 def test_post_sessions():
 
     global settings_file_path, sectionIdentifier
 
     with open(settings_file_path) as settings_file:
-        settings = json.load(settings_file)
+        decoded_section_configuration = json.load(settings_file)
 
     url = 'http://localhost:8080/ims/cat/v1p0/sections/' + sectionIdentifier + '/sessions'
     payload = '{}'
@@ -37,4 +55,4 @@ def test_post_sessions():
 
         assert response.status_code == 201
         assert response.json()['nextItems']['itemIdentifiers'] in \
-            [[item['itemId'] for item in form['items']] for form in settings['forms']]
+            [[item['itemId'] for item in form['items']] for form in decoded_section_configuration['forms']]
