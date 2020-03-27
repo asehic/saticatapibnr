@@ -1,9 +1,6 @@
-import connexion, json, uuid, base64, random
+import connexion, uuid, base64, random
 import ss
-
-def parse_section_configuration(c):
-    config = json.loads(c)
-    return [[item['itemId'] for item in form['items']] for form in config['forms']]
+from util import imsx_StatusInfo, parse_section_configuration
 
 def createSection(section):
     section_id = str(uuid.uuid1().int)
@@ -13,10 +10,10 @@ def createSection(section):
     return response, 201
 
 def getSection(sectionIdentifier):
-    return 'Not Implemented', 500
+    return imsx_StatusInfo('Not Implemented'), 500
 
 def deleteSection(sectionIdentifier):
-    return 'Not Implemented', 500
+    return imsx_StatusInfo('Not Implemented'), 500
 
 def createSession(sectionIdentifier, session):
     session_id = str(uuid.uuid1().int)
@@ -32,10 +29,10 @@ def createSession(sectionIdentifier, session):
     return response, 201
 
 def deleteSession(sectionIdentifier, sessionIdentifier):
-    return 'Not Implemented', 500
+    return imsx_StatusInfo('Not Implemented'), 500
 
 def getNextItems(sectionIdentifier, sessionIdentifier, resultSet):
-    return 'Not Implemented', 500
+    return imsx_StatusInfo('Not Implemented'), 500
 
 app = connexion.FlaskApp(__name__, specification_dir='openapi/', server='tornado')
 app.add_api('FSCATAPI.json')

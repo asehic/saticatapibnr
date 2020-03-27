@@ -6,13 +6,11 @@ Small App That Implements CAT API, But Not Really
 Python 3.6+
 
 Connexion 2.0
-Install with:
 ```
 pip install connexion[swagger-ui]
 ```
 
 Tornado 6.0.4
-Install with:
 ```
 pip install tornado
 ```
