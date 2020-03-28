@@ -11,13 +11,20 @@ def createSection(section):
     return response, 201
 
 def deleteSection(sectionIdentifier):
+    if not ss.get(sectionIdentifier) and not ss.get('s' + sectionIdentifier):
+        return imsx_StatusInfo(
+            "Section identifier '" + sectionIdentifier + "' not fuound", 'failure', 'error'), 404
     ss.delete(sectionIdentifier)
     ss.delete('s' + sectionIdentifier)
     return '', 204
 
 def getSection(sectionIdentifier):
+    section_configuration = ss.get(sectionIdentifier)
     section = ss.get('s' + sectionIdentifier)
-    item_identifiers = list(set(item_id for form in ss.get(sectionIdentifier) for item_id in form))
+    if not section_configuration or not section:
+        return imsx_StatusInfo(
+            "Section identifier '" + sectionIdentifier + "' not fuound", 'failure', 'error'), 404
+    item_identifiers = list(set(item_id for form in section_configuration for item_id in form))
     response = {
         'items': {
             'itemIdentifiers': item_identifiers
