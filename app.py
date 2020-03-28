@@ -11,7 +11,9 @@ def createSection(section):
     return response, 201
 
 def deleteSection(sectionIdentifier):
-    return imsx_StatusInfo('Not Implemented'), 500
+    ss.delete(sectionIdentifier)
+    ss.delete('s' + sectionIdentifier)
+    return '', 204
 
 def getSection(sectionIdentifier):
     section = ss.get('s' + sectionIdentifier)

@@ -56,3 +56,12 @@ def test_post_sessions():
         assert response.status_code == 201
         assert response.json()['nextItems']['itemIdentifiers'] in \
             [[item['itemId'] for item in form['items']] for form in decoded_section_configuration['forms']]
+
+def test_delete_sections():
+
+    global sectionIdentifier
+
+    url = 'http://localhost:8080/ims/cat/v1p0/sections/' + sectionIdentifier
+    response = requests.request('DELETE', url)
+
+    assert response.status_code == 204
