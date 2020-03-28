@@ -1,4 +1,4 @@
-import connexion, uuid, base64, random
+import connexion, json, uuid, base64, random
 import ss
 from util import imsx_StatusInfo, parse_section_configuration
 
@@ -36,21 +36,41 @@ def getSection(sectionIdentifier):
 def createSession(sectionIdentifier, session):
     session_id = str(uuid.uuid1().int)
     form = random.choice(ss.get(sectionIdentifier))
+    session_state = {
+        'sessionIdentifier': session_id,
+        'nextItemIdentifiers': form
+    }
     response = {
         'sessionIdentifier': session_id,
         'nextItems': {
             'itemIdentifiers': form,
             'stageLength': len(form)
         },
-        'sessionState': ''
+        'sessionState': base64.b64encode(json.dumps(session_state).encode()).decode()
     }
     return response, 201
 
 def deleteSession(sectionIdentifier, sessionIdentifier):
-    return imsx_StatusInfo('Not Implemented'), 500
+    return imsx_StatusInfo('Not implemented'), 500
 
 def getNextItems(sectionIdentifier, sessionIdentifier, resultSet):
-    return imsx_StatusInfo('Not Implemented'), 500
+    session_state = json.loads(base64.b64decode(resultSet['sessionState'].encode()).decode())
+    if session_state['sessionIdentifier'] != sessionIdentifier:
+        return imsx_StatusInfo('Session identifier mismatch', 'failure', 'error'), 400
+    next_items = [identifier for identifier in session_state['nextItemIdentifiers'] if \
+        identifier not in [i['identifier'] for i in resultSet['assessmentResult']['itemResult']]]
+    new_session_state = {
+        'sessionIdentifier': sessionIdentifier,
+        'nextItemIdentifiers': next_items
+    }
+    response = {
+        'nextItems': {
+            'itemIdentifiers': next_items,
+            'stageLength': len(next_items)
+        },
+        'sessionState': base64.b64encode(json.dumps(new_session_state).encode()).decode()
+    }
+    return response, 201
 
 app = connexion.FlaskApp(__name__, specification_dir='openapi/', server='tornado')
 app.add_api('FSCATAPI.json')
