@@ -801,7 +801,7 @@
                     "type" : "string"
                 }
             },
-            "required" : [ "sourceID","identifier" ],
+            "required" : [ "identifier" ],
             "additionalProperties" : false
         },
         "TemplateVariableDType" : {
