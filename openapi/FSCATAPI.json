@@ -546,7 +546,7 @@
                 "sessionStatus" : {
                     "description" : "The session status is used to interpret the values of the item variables. See the sessionStatus vocabulary.",
                     "type" : "string",
-                    "enum" : [ "final","initial","pendingResponseProcessing","pendingSubmission" ]
+                    "enum" : [ "final","initial","pendingResponseProcessing","pendingSubmission","FINAL","INITIAL","PENDINGRESPONSEPROCESSING","PENDINGSUBMISSION"]
                 },
                 "responseVariables" : {
                     "description" : "Indicates that a Response Variable is being reported. This is the value of one of the responses associated with an Item in the corresponding ASI instance.",
