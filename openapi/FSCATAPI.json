@@ -611,7 +611,7 @@
                 },
                 "value" : {
                     "description" : "Model Primitive Datatype = String. ...tbd (PrimitiveType description)...",
-                    "type" : "integer"
+                    "type" : "string"
                 }
             },
             "required" : [ "key","value" ],
