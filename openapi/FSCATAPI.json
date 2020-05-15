@@ -611,7 +611,7 @@
                 },
                 "value" : {
                     "description" : "Model Primitive Datatype = String. ...tbd (PrimitiveType description)...",
-                    "type" : "string"
+                    "type" : "integer"
                 }
             },
             "required" : [ "key","value" ],
@@ -892,7 +892,7 @@
                 },
                 "value" : {
                     "description" : "Model Primitive Datatype = NormalizedString. ...tbd (PrimitiveType description)...",
-                    "type" : "string"
+                    "type" : "integer"
                 }
             },
             "required" : [ "value" ],
