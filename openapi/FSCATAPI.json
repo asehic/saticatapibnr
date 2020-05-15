@@ -649,8 +649,7 @@
                 },
                 "cardinality" : {
                     "description" : "The cardinality of the Outcome Variable, taken from the corresponding declaration or definition.",
-                    "type" : "string",
-                    "enum" : [ "multiple","ordered","record","single" ]
+                    "type" : "integer"
                 },
                 "baseType" : {
                     "description" : "The base type of the Outcome Variable, taken from the corresponding declaration of definition. This value is omitted only for variables with record cardinality.",
@@ -708,8 +707,7 @@
                 },
                 "cardinality" : {
                     "description" : "The cardinality of the Response Variable, taken from the corresponding declaration or definition.",
-                    "type" : "string",
-                    "enum" : [ "multiple","ordered","record","single" ]
+                    "type" : "integer"
                 },
                 "baseType" : {
                     "description" : "The base type of the Response Variable, taken from the corresponding declaration of definition. This value is omitted only for variables with record cardinality.",
@@ -815,8 +813,7 @@
                 },
                 "cardinality" : {
                     "description" : "...tbd (Enumeration description)...",
-                    "type" : "string",
-                    "enum" : [ "multiple","ordered","record","single" ]
+                    "type" : "integer"
                 },
                 "baseType" : {
                     "description" : "...tbd (Enumeration description)...",
