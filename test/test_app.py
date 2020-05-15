@@ -11,7 +11,7 @@ def test_post_sections():
         section_configuration = settings_file.read()
     encoded_section_configuration = base64.b64encode(section_configuration.encode())
 
-    url = 'http://localhost:8080/ims/cat/v1p0/sections'
+    url = 'http://localhost:7070/ims/cat/v1p0/sections'
     payload = '{\n    "sectionConfiguration": "' + encoded_section_configuration.decode() + '"\n}'
     headers = {'Content-Type': 'application/json'}
     response = requests.request('POST', url, headers=headers, data = payload)
@@ -30,7 +30,7 @@ def test_get_sections():
     encoded_section_configuration = base64.b64encode(section_configuration.encode())
     decoded_section_configuration = json.loads(section_configuration)
 
-    url = 'http://localhost:8080/ims/cat/v1p0/sections/' + sectionIdentifier
+    url = 'http://localhost:7070/ims/cat/v1p0/sections/' + sectionIdentifier
     response = requests.request('GET', url)
 
     forms = [[item['itemId'] for item in form['items']] for form in decoded_section_configuration['forms']]
@@ -46,7 +46,7 @@ def test_post_sessions():
     with open(settings_file_path) as settings_file:
         decoded_section_configuration = json.load(settings_file)
 
-    url = 'http://localhost:8080/ims/cat/v1p0/sections/' + sectionIdentifier + '/sessions'
+    url = 'http://localhost:7070/ims/cat/v1p0/sections/' + sectionIdentifier + '/sessions'
     payload = '{}'
     headers = {'Content-Type': 'application/json'}
 
@@ -61,7 +61,7 @@ def test_delete_sections():
 
     global sectionIdentifier
 
-    url = 'http://localhost:8080/ims/cat/v1p0/sections/' + sectionIdentifier
+    url = 'http://localhost:7070/ims/cat/v1p0/sections/' + sectionIdentifier
     response = requests.request('DELETE', url)
 
     assert response.status_code == 204

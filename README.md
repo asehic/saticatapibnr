@@ -23,4 +23,4 @@ python app.py
 
 ### Swagger UI
 
-http://localhost:8080/ims/cat/v1p0/ui/
+http://localhost:7070/ims/cat/v1p0/ui/
