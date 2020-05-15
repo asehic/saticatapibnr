@@ -654,7 +654,8 @@
                 "baseType" : {
                     "description" : "The base type of the Outcome Variable, taken from the corresponding declaration of definition. This value is omitted only for variables with record cardinality.",
                     "type" : "string",
-                    "enum" : [ "boolean","directedPair","duration","file","float","identifier","integer","pair","point","string","uri" ]
+                    "enum" : [ "boolean","directedPair","duration","file","float","identifier","integer","pair","point","string","uri",
+                               "BOOLEAN","DIRECTEDPAIR","DURATION","FILE","FLOAT","IDENTIFIER","INTEGER","PAIR","POINT","STRING","URI" ]
                 },
                 "view" : {
                     "description" : "The views (if any) declared for the outcome must be copied to the report to enable systems that render the report to hide information not relevant in a specific situation. If no values are given, the outcome's value should be considered relevant in all views.",
@@ -712,7 +713,8 @@
                 "baseType" : {
                     "description" : "The base type of the Response Variable, taken from the corresponding declaration of definition. This value is omitted only for variables with record cardinality.",
                     "type" : "string",
-                    "enum" : [ "boolean","directedPair","duration","file","float","identifier","integer","pair","point","string","uri" ]
+                    "enum" : [ "boolean","directedPair","duration","file","float","identifier","integer","pair","point","string","uri",
+                               "BOOLEAN","DIRECTEDPAIR","DURATION","FILE","FLOAT","IDENTIFIER","INTEGER","PAIR","POINT","STRING","URI" ]
                 },
                 "choiceSequence" : {
                     "description" : "Model Primitive Datatype = NCName. When a response variable is bound to an interaction that supports the shuffling of choices, the sequence of choices experienced by the candidate will vary between test instances. When shuffling is in effect, the sequence of choices should be reported as a sequence of choice identifiers using this attribute.",
@@ -818,7 +820,8 @@
                 "baseType" : {
                     "description" : "...tbd (Enumeration description)...",
                     "type" : "string",
-                    "enum" : [ "boolean","directedPair","duration","file","float","identifier","integer","pair","point","string","uri" ]
+                    "enum" : [ "boolean","directedPair","duration","file","float","identifier","integer","pair","point","string","uri",
+                               "BOOLEAN","DIRECTEDPAIR","DURATION","FILE","FLOAT","IDENTIFIER","INTEGER","PAIR","POINT","STRING","URI" ]
                 },
                 "value" : {
                     "description" : "...tbd (ComplexType property description)...",
@@ -884,7 +887,8 @@
                 "baseType" : {
                     "description" : "...tbd (Enumeration description)...",
                     "type" : "string",
-                    "enum" : [ "boolean","directedPair","duration","file","float","identifier","integer","pair","point","string","uri" ]
+                    "enum" : [ "boolean","directedPair","duration","file","float","identifier","integer","pair","point","string","uri",
+                               "BOOLEAN","DIRECTEDPAIR","DURATION","FILE","FLOAT","IDENTIFIER","INTEGER","PAIR","POINT","STRING","URI" ]
                 },
                 "value" : {
                     "description" : "Model Primitive Datatype = NormalizedString. ...tbd (PrimitiveType description)...",
